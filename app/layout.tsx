@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 
-import "./style.css"
 import "./globals.css";
-
+import Header from "@/components/Header";
+import { ThemeProvider } from "next-themes";
+import { ClerkProvider } from "@clerk/nextjs";
 export const metadata: Metadata = {
-  title: "Eskanor",
-  description: "Fullstack web developer",
+  title: "IMDB",
+  description: "Movie Nation of entertainment",
 };
 
 export default function RootLayout({
@@ -14,11 +15,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body
+        >
+          <ThemeProvider>
+            <Header />
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
