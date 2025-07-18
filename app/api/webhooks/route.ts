@@ -1,6 +1,8 @@
 
 import { Webhook } from 'svix';
 import { NextResponse } from 'next/server';
+import { createOrUpdateUser, deleteUser } from '@/lib/resource/user';
+import { clerkClient } from '@clerk/nextjs/server';
 
 // Ensure the webhook secret is loaded from environment variables
 const WEBHOOK_SECRET = process.env.SIGNING_SECRET;
@@ -52,31 +54,41 @@ export async function POST(req: Request) {
     const { id } = evt.data;
 
     // Handle different event types (e.g., user.created)
-    try {
-        if (eventType === 'user.created') {
-            const { email_addresses, username, image_url } = evt.data;
-            console.log(`Received webhook with ID ${id} and event type ${eventType}`);
-            console.log('Webhook payload:', evt.data);
+    if (eventType === 'user.created' || eventType === 'user.updated') {
+        const { first_name, last_name, image_url, email_addresses } = evt?.data
 
-            // Example: Save user to your database
-            const user = {
-                clerkId: id,
-                email: email_addresses[0]?.email_address || '',
-                username: username || null,
-                image_url: image_url || '',
-            };
+        try {
+            const user = await createOrUpdateUser(id, first_name, last_name, image_url, email_addresses)
+            if (user && eventType === 'user.created') {
+                try {
+                    const client = await clerkClient()
+                    await client.users.updateUserMetadata(id, {
+                        publicMetadata: {
+                            userMongoId: user._id
+                        }
+                    })
+                } catch (error) {
+                    console.log("Error: Could not update metedata", error)
+                }
+            }
 
-            // TODO: Implement your database logic here (e.g., save to MongoDB, Prisma, etc.)
-            // Example: await createUser(user);
+        } catch (error) {
+            console.log("Error: Could not update or create user", error)
+            return new Response('Error: Could not update or create user', { status: 400 });
 
-            return new Response('Webhook received and processed', { status: 200 });
         }
-
-        // Add more event types as needed (e.g., user.updated, user.deleted)
-        console.log(`Unhandled event type: ${eventType}`);
-        return new Response(`Webhook event ${eventType} received but not handled`, { status: 200 });
-    } catch (err) {
-        console.error('Error processing webhook:', err);
-        return new Response('Error processing webhook', { status: 500 });
     }
+
+    if (eventType === 'user.created' || eventType === 'user.updated') {
+
+        try {
+            await deleteUser(id)
+        } catch (error) {
+            console.log("Error: Could not delete user", error)
+            return new Response('Error: Could not delete user', { status: 400 });
+
+        }
+    }
+
+    return new Response('webhook received', { status: 200 });
 }
