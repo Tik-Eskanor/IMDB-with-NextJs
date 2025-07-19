@@ -12,9 +12,8 @@ export const createOrUpdateUser = async (id, first_name, last_name, image_url, e
             profilePicture: image_url,
             email: email_addresses[0].email_address
 
-        }),
-
-            console.log(user)
+        })
+        console.log(user)
         return user
 
     } catch (error) {
