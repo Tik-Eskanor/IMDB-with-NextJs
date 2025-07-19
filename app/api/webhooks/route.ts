@@ -58,7 +58,7 @@ export async function POST(req: Request) {
         const { first_name, last_name, image_url, email_addresses } = evt?.data
 
         try {
-            const user = await createOrUpdateUser(id, first_name, last_name, image_url, email_addresses)
+            const user = await createOrUpdateUser(id, first_name, last_name, image_url, email_addresses[0].email_address)
             if (user && eventType === 'user.created') {
                 try {
                     const client = await clerkClient()

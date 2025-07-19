@@ -1,18 +1,19 @@
 import connect from "../mongodb/mongoose"
 import User from "../models/User"
 
-export const createOrUpdateUser = async (id, first_name, last_name, image_url, email_addresses) => {
+export const createOrUpdateUser = async (id: string, first_name: string, last_name: string, image_url: string, email_address: string) => {
     try {
         connect()
         console.log("starting")
-        const user = await User.insertOne({
-            clerkId: id,
-            firstName: first_name,
-            lastName: last_name,
-            profilePicture: image_url,
-            email: email_addresses[0].email_address
-
-        })
+        const user = await User.findOneAndUpdate({ clerkId: id }, {
+            $set: {
+                firstName: first_name,
+                lastName: last_name,
+                profilePicture: image_url,
+                email: email_address
+            }
+        },
+            { upsert: true, new: true })
         console.log(user)
         return user
 
