@@ -5,16 +5,16 @@ export const createOrUpdateUser = async (id, first_name, last_name, image_url, e
     try {
         await connect()
         console.log("starting")
-        const user = await User.findOneAndUpdate({ clerkId: id }, {
-            $set: {
-                firstName: first_name,
-                lastName: last_name,
-                profilePicture: image_url,
-                email: email_addresses[0].email_address
-            }
-        },
-            { upsert: true, new: true })
-        console.log(user)
+        const user = await User.insertOne({
+            clerkId: id,
+            firstName: first_name,
+            lastName: last_name,
+            profilePicture: image_url,
+            email: email_addresses[0].email_address
+
+        }),
+
+            console.log(user)
         return user
 
     } catch (error) {
