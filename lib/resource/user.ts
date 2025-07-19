@@ -14,7 +14,7 @@ export const createOrUpdateUser = async (id, first_name, last_name, image_url, e
             }
         },
             { upsert: true, new: true })
-        console.log(user._id)
+        console.log(user)
         return user
 
     } catch (error) {
