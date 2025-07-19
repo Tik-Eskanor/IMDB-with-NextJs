@@ -13,7 +13,7 @@ export const createOrUpdateUser = async (id: string, first_name: string, last_na
                 email: email_address
             }
         },
-            { upsert: true, new: true })
+            { upsert: true, new: true, runValidators: true })
         console.log(user)
         return user
 
