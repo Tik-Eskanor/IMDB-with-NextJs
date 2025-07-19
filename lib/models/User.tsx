@@ -61,12 +61,10 @@ const userSchema: Schema<user> = new Schema(
         clerkId: {
             type: String,
             required: true,
-            unique: true, // Ensures clerkId is unique (Clerk user ID)
         },
         email: {
             type: String,
             required: true,
-            unique: true, // Ensures email is unique
             trim: true,
             match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"], // Basic email validation
         },
