@@ -3,6 +3,6 @@ import mongoose, { Mongoose } from "mongoose";
 
 export default function connect() {
     mongoose.connect(process.env.MONGODB_URI || "")
-        .then(() => console.log('Connected to MongoDB: next-imdb'))
+        .then(() => console.log('Connected to:', mongoose.connection.name))
         .catch(err => console.error('Connection error:', err));
 }
