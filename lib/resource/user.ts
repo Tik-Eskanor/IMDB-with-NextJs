@@ -5,7 +5,7 @@ export const createOrUpdateUser = async (id, first_name, last_name, image_url, e
     try {
         await connect()
         console.log("starting")
-        const user = User.findOneAndUpdate({ clerkId: id }, {
+        const user = await User.findOneAndUpdate({ clerkId: id }, {
             $set: {
                 firstName: first_name,
                 lastName: last_name,
@@ -14,7 +14,7 @@ export const createOrUpdateUser = async (id, first_name, last_name, image_url, e
             }
         },
             { upsert: true, new: true })
-        console.log(user)
+        console.log(user._id)
         return user
 
     } catch (error) {
