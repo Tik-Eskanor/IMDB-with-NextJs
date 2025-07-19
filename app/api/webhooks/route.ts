@@ -79,7 +79,7 @@ export async function POST(req: Request) {
         }
     }
 
-    if (eventType === 'user.created' || eventType === 'user.updated') {
+    if (eventType === 'user.deleted') {
 
         try {
             await deleteUser(id)

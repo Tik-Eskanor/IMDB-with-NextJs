@@ -26,7 +26,6 @@ const favSchema: Schema<fav> = new Schema(
         movieId: {
             type: String,
             required: true,
-            unique: true, // Ensures movieId is unique in the collection
         },
         title: {
             type: String,
@@ -66,7 +65,6 @@ const userSchema: Schema<user> = new Schema(
             type: String,
             required: true,
             trim: true,
-            match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"], // Basic email validation
         },
         firstName: {
             type: String,
