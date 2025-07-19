@@ -10,10 +10,10 @@ export default async function connect(): promise<void> | promise<Mongoose> {
     }
 
     try {
-        await mongoose.connect(process.env.MONGODB_URI || "")
+        await mongoose.connect(process.env.MONGODB_URI || '')
         initialize = true;
-        console.log("Mongodn connected")
+        console.log("Mongodb connected")
     } catch (error) {
-        console.log("mongodn connection error", error)
+        console.log("mongodb connection error", error)
     }
 }

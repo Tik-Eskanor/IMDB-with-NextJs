@@ -4,6 +4,7 @@ import User from "../models/User"
 export const createOrUpdateUser = async (id, first_name, last_name, image_url, email_addresses) => {
     try {
         await connect()
+        console.log("starting")
         const user = User.findOneAndUpdate({ clerkId: id }, {
             $set: {
                 firstName: first_name,
@@ -13,6 +14,7 @@ export const createOrUpdateUser = async (id, first_name, last_name, image_url, e
             }
         },
             { upsert: true, new: true })
+        console.log(user)
         return user
 
     } catch (error) {
