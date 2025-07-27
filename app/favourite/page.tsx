@@ -5,7 +5,14 @@ import { useUser } from "@clerk/nextjs"
 import { useState, useEffect } from "react"
 
 export default function Favourite() {
-    const [results, setResults] = useState([{}])
+    const [results, setResults] = useState([{
+        movieId: "",
+        title: "",
+        image: "",
+        description: "",
+        dateReleased: "",
+        rating: ""
+    }])
     const { isSignedIn, user, isLoaded } = useUser()
 
     useEffect(() => {
@@ -41,7 +48,7 @@ export default function Favourite() {
                 title: result.title,
                 backdrop_path: result.image,
                 overView: result.description,
-                first_air_date: result.dateReleased.substring(0, 10),
+                first_air_date: result.dateReleased,
                 vote_count: result.rating
             }))} />}
         </div>
