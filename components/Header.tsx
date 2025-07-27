@@ -14,6 +14,7 @@ export default function Header() {
                     <Link href="/sign-in">Sign In </Link>
                 </SignedOut>
                 <li className='hidden sm:block'><Link href="/">Home</Link></li>
+                <li className='hidden sm:block'><Link href="/favourite">Favourite</Link></li>
                 <li className='hidden sm:block'><Link href="/about">About</Link></li>
             </ul>
             <div className="flex items-center gap-2">
