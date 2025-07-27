@@ -1,10 +1,12 @@
 import Results from '@/components/Results'
-import React from 'react'
 const API_KEY = process.env.TMDB_API_KEY
+type Param = {
+    params: Promise<{ genre: string }>
+}
+export default async function page({ params }: Param) {
+    const genre = (await params).genre
 
-export default async function page() {
-
-    const res = await fetch(`https://api.themoviedb.org/3/trending/all/week?api_key=${API_KEY}&language=en-US&page=1`)
+    const res = await fetch(`https://api.themoviedb.org/3/movie/${genre}?api_key=${API_KEY}&language=en-US&page=1`)
     const data = await res.json()
     if (!res.ok) throw new Error("Failed to fetch data")
 
